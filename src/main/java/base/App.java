@@ -1,4 +1,8 @@
 package base;
+
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
 /*
  *  UCF COP3330 Summer 2021 Assignment 1 Solution
  *  Copyright 2021 Scott Matson
@@ -38,4 +42,56 @@ Challenges
 -Implement the program using data structures to avoid nested if statements.
  */
 public class App {
+    static Scanner ui = new Scanner(System.in);
+    static DecimalFormat df = new DecimalFormat("##0.00");
+
+    public static void main(String[] args) {
+        System.out.print("What is the order amount? ");
+        int amount = ui.nextInt();
+
+        ui.nextLine();
+        System.out.print("What state do you live in? ");
+        String state = ui.nextLine();
+        String state_test = state.toLowerCase();
+        double price, total_tax;
+
+        if(state_test.equals("wisconsin")) //5% sales tax
+        {
+            double wtax = 0.05;
+            System.out.print("What county do you live in? ");
+            String county = ui.nextLine();
+            String county_test = county.toLowerCase();
+
+            if(county_test.equals("eau claire"))
+            {
+                total_tax = (amount * (wtax + 0.005));
+                price = amount + total_tax;
+            }
+            else if(county_test.equals("dunn"))
+            {
+                total_tax = (amount * (wtax + 0.004));
+                price = amount + total_tax;
+            }
+            else
+            {
+                total_tax = (wtax * amount);
+                price = amount + total_tax;
+            }
+        }
+
+        else if(state_test.equals("illinois"))
+        {
+            double itax = 0.08;
+            total_tax = (itax * amount);
+            price = amount + (amount * itax);
+        }
+
+        else //All other states no tax
+        {
+            price = amount;
+            total_tax = 0.00;
+        }
+
+        System.out.println("The tax is $" + df.format(total_tax) + ".\nThe total is $" + df.format(price) + ".");
+    }
 }
